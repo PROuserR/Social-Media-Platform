@@ -1,0 +1,133 @@
+{
+  "posts": [
+    {
+      "id": 2,
+      "title": "another title",
+      "content": "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available.",
+      "imageId": 2,
+      "userId": 2,
+      "likes": [
+        2
+      ],
+      "comments": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "saved": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Toyota Supra",
+      "content": "Breathtaking Car!",
+      "imageId": 7,
+      "userId": 1,
+      "likes": [],
+      "comments": [],
+      "saved": []
+    },
+    {
+      "id": 4,
+      "title": "Zustand",
+      "content": "Zustand is awesome!",
+      "imageId": 6,
+      "userId": 1,
+      "likes": [],
+      "comments": [],
+      "saved": []
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "text": "a comment about post 1",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "text": "another comment about post 1",
+      "userId": 1
+    },
+    {
+      "text": "Wow",
+      "userId": 1,
+      "id": 3
+    },
+    {
+      "text": "Where is this image taken?",
+      "userId": 1,
+      "id": 4
+    },
+    {
+      "text": "Nice shot",
+      "userId": 1,
+      "id": 5
+    },
+    {
+      "text": "Photographer name?",
+      "userId": 1,
+      "id": 6
+    },
+    {
+      "text": "Such nice picture",
+      "userId": 1,
+      "id": 7
+    }
+  ],
+  "likes": [
+    {
+      "id": 1,
+      "userId": 1
+    }
+  ],
+  "images": [
+    {
+      "id": 1,
+      "url": "https://i.natgeofe.com/n/726708f7-f79d-47a5-ba03-711449823607/01-balance-of-nature_3x2.jpg?w=718&h=479"
+    },
+    {
+      "id": 2,
+      "url": "https://i.natgeofe.com/n/32f96687-ffe2-4811-ae1f-15a5341af008/14_earthday_nationalgeographic_1130293_3x2.jpg?w=718&h=479"
+    },
+    {
+      "url": "https://edgecast-img.yahoo.net/mysterio/api/DCA5BADC2F93B18D66AB0DD4A884D8CF55966D853DD04F907996C75C5B6AE7E0/autoblog/resizefill_w1200_h720;quality_85;format_webp;cc_31536000;/https://o.aolcdn.com/images/dims3/GLOB/crop/2560x1440+0+0/resize/800x450!/format/jpg/quality/85/http://o.aolcdn.com/hss/storage/midas/20c17b7c637f303f52485cc5a69ccb9a/206097453/01-mclaren-senna-victory-grey.jpg",
+      "id": 3
+    },
+    {
+      "url": "https://cdn.trackdays.co.uk/cdn-cgi/image/format=auto,fit=contain/product/toyota-supra-gr-2023-14532-main.jpg",
+      "id": 4
+    },
+    {
+      "url": "https://github.com/pmndrs/zustand/blob/HEAD/bear.jpg",
+      "id": 5
+    },
+    {
+      "url": "https://miro.medium.com/v2/resize:fit:800/1*fKV3_Y4usDYZKPsNp1yCvA.png",
+      "id": 6
+    },
+    {
+      "url": "https://cdn.trackdays.co.uk/cdn-cgi/image/format=auto,fit=contain/product/toyota-supra-gr-2023-14532-main.jpg",
+      "id": 7
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "Rami Alshaar",
+      "password": "1234qwer"
+    },
+    {
+      "id": 2,
+      "username": "Ahmad Abd",
+      "password": "qweasdzxc"
+    },
+    {
+      "username": "admin",
+      "password": "admin",
+      "id": 3
+    }
+  ]
+}
