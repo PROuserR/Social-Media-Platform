@@ -7,16 +7,14 @@
       "imageId": 2,
       "userId": 2,
       "likes": [
-        2,
-        1
+        2
       ],
       "comments": [
         4,
         5,
         6,
         7,
-        10,
-        10
+        3
       ],
       "saved": []
     },
@@ -26,12 +24,16 @@
       "content": "Breathtaking Car!",
       "imageId": 7,
       "userId": 1,
-      "likes": [],
+      "likes": [
+        1
+      ],
       "comments": [
         9,
         2
       ],
-      "saved": []
+      "saved": [
+        3
+      ]
     },
     {
       "id": 4,
@@ -83,7 +85,7 @@
       "userId": 1
     },
     {
-      "text": "Price?",
+      "text": "Price Please?",
       "username": "admin",
       "userId": 3,
       "id": 2
