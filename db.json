@@ -7,17 +7,18 @@
       "imageId": 2,
       "userId": 2,
       "likes": [
-        2
+        2,
+        1
       ],
       "comments": [
         4,
         5,
         6,
-        7
+        7,
+        10,
+        10
       ],
-      "saved": [
-        1
-      ]
+      "saved": []
     },
     {
       "id": 3,
@@ -26,7 +27,9 @@
       "imageId": 7,
       "userId": 1,
       "likes": [],
-      "comments": [],
+      "comments": [
+        9
+      ],
       "saved": []
     },
     {
@@ -35,7 +38,38 @@
       "content": "Zustand is awesome!",
       "imageId": 6,
       "userId": 1,
+      "likes": [
+        1
+      ],
+      "comments": [
+        8,
+        8,
+        8
+      ],
+      "saved": [
+        1
+      ]
+    },
+    {
+      "title": "asfd",
+      "content": "Contentasdfsdfa",
+      "imageId": 8,
+      "userId": 1,
+      "comments": [],
       "likes": [],
+      "saved": [],
+      "id": 5
+    },
+    {
+      "id": 6,
+      "title": "Samsung Galaxy Z Flip 5",
+      "content": "Awesome phone to carry around.",
+      "imageId": 10,
+      "userId": 3,
+      "likes": [
+        3,
+        1
+      ],
       "comments": [],
       "saved": []
     }
@@ -75,6 +109,21 @@
       "text": "Such nice picture",
       "userId": 1,
       "id": 7
+    },
+    {
+      "text": "What is this?",
+      "userId": 1,
+      "id": 8
+    },
+    {
+      "text": "Price?",
+      "userId": 1,
+      "id": 9
+    },
+    {
+      "text": "Another Comment",
+      "userId": 3,
+      "id": 10
     }
   ],
   "likes": [
@@ -109,8 +158,20 @@
       "id": 6
     },
     {
-      "url": "https://cdn.trackdays.co.uk/cdn-cgi/image/format=auto,fit=contain/product/toyota-supra-gr-2023-14532-main.jpg",
+      "url": "https://cdn.motor1.com/images/mgl/ojbLG4/s4/2022-toyota-supra-2.0-review.webp",
       "id": 7
+    },
+    {
+      "url": "https://cdn.dribbble.com/userupload/4596920/file/original-39dd6812caa11ebfb322dcf739a288e4.jpg?resize=1200x812",
+      "id": 8
+    },
+    {
+      "url": "https://images.samsung.com/ca/smartphones/galaxy-z-flip5/buy/product_color_lavender.png",
+      "id": 9
+    },
+    {
+      "url": "https://images.samsung.com/ca/smartphones/galaxy-z-flip5/buy/product_color_lavender.png",
+      "id": 10
     }
   ],
   "users": [

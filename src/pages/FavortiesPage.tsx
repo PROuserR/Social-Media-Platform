@@ -11,7 +11,7 @@ const FavortiesPage = () => {
     const res = await fetch("http://localhost:3000/posts");
     const data = await res.json();
     const favortiesPosts = data.filter((post: PostModal) => {
-      if (post.saved.includes(userId)) return post;
+      return post.saved.includes(userId)
     });
     setPosts(favortiesPosts);
   };
@@ -20,7 +20,8 @@ const FavortiesPage = () => {
     getMyFavoritePosts();
   }, []);
   return (
-    <div>
+    <div className="w-full">
+      {posts.length ? null : <div className="text-4xl p-14 text-center">No posts yet</div>}
       {posts.map((post, index) => (
         <Post key={index} post={post} myPostFlag={false} />
       ))}

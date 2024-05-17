@@ -53,32 +53,37 @@ const EditPostPage = () => {
   }, []);
 
   return (
-    <div className="space-y-10">
-      <h1>Edit Post</h1>
-      <div className="flex flex-col space-y-6">
-        <input
-          ref={titleRef}
-          className="w-1/2 m-auto py-4 bg-transparent text-4xl text-center border-4 border-black outline-none"
-          placeholder="Title"
-          defaultValue={editPostData.title}
-        />
-        <textarea
-          ref={contentRef}
-          className="w-1/2 m-auto p-4 bg-transparent outline-none border-4 border-black h-96"
-          defaultValue={editPostData.content}
-        ></textarea>
+    <div className="my-12">
+      <div className="flex flex-col w-full m-auto rounded-xl text-center p-14 space-y-10 text-xl bg-[#191B1D]">
+        <div className="text-4xl font-bold">Edit Post</div>
+        <div className="flex flex-col space-y-6">
+          <input
+            ref={titleRef}
+            className="w-4/5 m-auto rounded-xl py-4 bg-transparent text-3xl text-center border-2 border-black outline-none"
+            placeholder="Title"
+            defaultValue={editPostData.title}
+          />
+          <textarea
+            ref={contentRef}
+            className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black h-96"
+            defaultValue={editPostData.content}
+          ></textarea>
 
-        <input
-          ref={imageRef}
-          className="w-1/2 m-auto p-4 bg-transparent outline-none border-4 border-black"
-          defaultValue={editPostImageUrl}
-          placeholder="Image Url"
-        />
+          <input
+            ref={imageRef}
+            className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black"
+            defaultValue={editPostImageUrl}
+            placeholder="Image Url"
+          />
+        </div>
+
+        <button
+          onClick={editPost}
+          className="w-4/5 m-auto py-3 px-8 bg-blue-700 rounded-2xl hover:bg-blue-600"
+        >
+          Update
+        </button>
       </div>
-
-      <button onClick={editPost} className="w-1/2 m-auto">
-        Update
-      </button>
     </div>
   );
 };
