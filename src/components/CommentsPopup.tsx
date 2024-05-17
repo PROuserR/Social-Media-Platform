@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import useUserStore from "../stores/UserStore";
 import CommentModal from "../Modals/CommentModal";
 import PostModal from "../Modals/PostModal";
-import UserModal from "../Modals/UserModal";
 import useTrigerComponentStore from "../stores/TrigerComponentStore";
 
 type CommentsPopupProps = {
@@ -13,11 +12,13 @@ type CommentsPopupProps = {
 
 const CommentsPopup = ({ post }: CommentsPopupProps) => {
   const userId = useUserStore((state) => state.userId);
+  const username = useUserStore((state) => state.username);
   const [comments, setComments] = useState([]);
   const [editedComment, setEditedComment] = useState({
     id: 0,
     text: "",
     userId: 0,
+    username: "",
   });
   const commentInput = useRef(document.createElement("input"));
   const commentPopupTrigger = useTrigerComponentStore(
@@ -33,13 +34,10 @@ const CommentsPopup = ({ post }: CommentsPopupProps) => {
     return data.comments;
   };
 
-
-
   const getComments = async () => {
     const res = await fetch("http://localhost:3000/comments/");
     const data = await res.json();
     const commentsIds = await getCommentsIds();
-
 
     const comments = data.filter((comment: CommentModal) => {
       return commentsIds.includes(comment.id);
@@ -56,6 +54,7 @@ const CommentsPopup = ({ post }: CommentsPopupProps) => {
       },
       body: JSON.stringify({
         text: commentInput.current.value,
+        username: username,
         userId: userId,
       }),
     });
@@ -142,10 +141,11 @@ const CommentsPopup = ({ post }: CommentsPopupProps) => {
             <div className="text-3xl font-bold text-center">Comments</div>
             <div className="text-start px-4 space-y-6">
               {comments.map((comment: CommentModal, index: number) => (
-                <div className="flex" key={index}>
-                  <li className="text-lg">
-                    {comment.username} {comment.text}
-                  </li>
+                <div className="flex items-center" key={index}>
+                  <div className="flex flex-col space-y-2">
+                    <span className="font-bold mr-2">{comment.username}</span>
+                    <span className="ml-2">{comment.text}</span>
+                  </div>
                   {comment.userId === userId ? (
                     <div className="flex ml-auto space-x-4">
                       <img

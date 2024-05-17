@@ -2,7 +2,7 @@ interface CommentModal {
   id: number;
   text: string;
   userId: number;
-  username: string | null | undefined;
+  username: string;
 }
 
 export default CommentModal;
