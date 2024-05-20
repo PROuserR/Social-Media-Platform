@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../stores/UserStore";
+import { useMutation } from "@tanstack/react-query";
 
 const CreatePostPage = () => {
   const titleRef = useRef(document.createElement("input"));
@@ -40,8 +41,16 @@ const CreatePostPage = () => {
         saved: [],
       }),
     });
-    nav("/");
+    return new Promise((resolve) => {
+      nav("/");
+      resolve("Success");
+    });
   };
+
+  const mutation = useMutation({
+    mutationKey: ["create-post"],
+    mutationFn: createPost,
+  });
 
   return (
     <div className="my-12">
@@ -50,7 +59,7 @@ const CreatePostPage = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            createPost();
+            mutation.mutateAsync();
           }}
           className="flex flex-col space-y-6"
         >

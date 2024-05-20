@@ -1,6 +1,7 @@
 import Post from "../components/Post";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PostModal from "../Modals/PostModal";
+import { useQuery } from "@tanstack/react-query";
 
 const HomePage = () => {
   const [posts, setPosts] = useState<PostModal[]>([]);
@@ -8,19 +9,26 @@ const HomePage = () => {
   const getPosts = async () => {
     const res = await fetch("http://localhost:3000/posts");
     const data = await res.json();
-    setPosts(data);
+    return new Promise((resolve) => {
+      setPosts(data);
+      resolve("Success");
+    });
   };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
-  return (
-    <div className="w-full">
-      {posts.map((post: PostModal, index: number) => (
-        <Post key={index} post={post} myPostFlag={false} />
-      ))}
-    </div>
-  );
+  const query = useQuery({
+    queryKey: ["feed"],
+    queryFn: getPosts,
+  });
+
+  if (query.isLoading) return <div>Loading ...</div>;
+  else
+    return (
+      <div className="w-full">
+        {posts.map((post: PostModal, index: number) => (
+          <Post key={index} post={post} myPostFlag={false} />
+        ))}
+      </div>
+    );
 };
 
 export default HomePage;

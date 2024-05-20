@@ -6,12 +6,13 @@ import WhiteBookmarkIcon from "../assets/bookmark-fill.svg";
 import EditIcon from "../assets/pencil.svg";
 import DeleteIcon from "../assets/trash.svg";
 import CommentsPopup from "./CommentsPopup";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useTrigerComponentStore from "../stores/TrigerComponentStore";
+import useTrigerComponentStore from "../stores/TrigerCommentsPopupStore";
 import useUserStore from "../stores/UserStore";
 import usePostStore from "../stores/PostStore";
 import PostModal from "../Modals/PostModal";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 type PostProps = {
   post: PostModal;
@@ -23,19 +24,12 @@ const Post = ({ post, myPostFlag }: PostProps) => {
     (state) => state.setCommentPopupTrigger
   );
   const setPostData = usePostStore((state) => state.setPostData);
-  const deletePostTrigger = useTrigerComponentStore(
-    (state) => state.deletePostTrigger
-  );
-  const setDeletePostTrigger = useTrigerComponentStore(
-    (state) => state.setDeletePostTrigger
-  );
   const userId = useUserStore((state) => state.userId);
   const [url, setUrl] = useState("");
   const [username, setUsername] = useState("");
   const [likes, setLikes] = useState(post.likes.length);
   const [likeTrigger, setLikeTrigger] = useState(post.likes.includes(userId));
   const [savedTrigger, setSavedTrigger] = useState(post.saved.includes(userId));
-
   const nav = useNavigate();
 
   const getImage = async () => {
@@ -61,8 +55,12 @@ const Post = ({ post, myPostFlag }: PostProps) => {
       },
       body: JSON.stringify(modPost),
     });
-    setLikes(likes + 1);
-    setLikeTrigger(true);
+
+    return new Promise((resolve) => {
+      setLikes(likes + 1);
+      setLikeTrigger(true);
+      resolve("Success");
+    });
   };
 
   const unlikePost = async () => {
@@ -77,11 +75,15 @@ const Post = ({ post, myPostFlag }: PostProps) => {
       },
       body: JSON.stringify(modPost),
     });
-    setLikes(likes - 1);
-    setLikeTrigger(false);
+
+    return new Promise((resolve) => {
+      setLikes(likes - 1);
+      setLikeTrigger(false);
+      resolve("Success");
+    });
   };
 
-  const savePostToFavorites = async () => {
+  const savePost = async () => {
     const modPost = post;
     modPost.saved.push(userId);
 
@@ -92,7 +94,11 @@ const Post = ({ post, myPostFlag }: PostProps) => {
       },
       body: JSON.stringify(modPost),
     });
-    setSavedTrigger(true);
+
+    return new Promise((resolve) => {
+      setSavedTrigger(true);
+      resolve("Success");
+    });
   };
 
   const unsavePost = async () => {
@@ -109,7 +115,10 @@ const Post = ({ post, myPostFlag }: PostProps) => {
       body: JSON.stringify(modPost),
     });
 
-    setSavedTrigger(false);
+    return new Promise((resolve) => {
+      setSavedTrigger(false);
+      resolve("Success");
+    });
   };
 
   const deletePost = async () => {
@@ -119,12 +128,10 @@ const Post = ({ post, myPostFlag }: PostProps) => {
         "Content-type": "application/json",
       },
     });
-  };
 
-  const deleteAndRefresh = () => {
-    deletePost();
-
-    setDeletePostTrigger(!deletePostTrigger);
+    return new Promise((resolve) => {
+      resolve("Success");
+    });
   };
 
   const navToEditPostPage = () => {
@@ -132,85 +139,147 @@ const Post = ({ post, myPostFlag }: PostProps) => {
     nav("/edit-post");
   };
 
-  useEffect(() => {
+  const getPostRequirements = () => {
     getImage();
     getUsername();
-  }, []);
+    return new Promise((resolve) => {
+      resolve("Success");
+    });
+  };
 
-  return (
-    <div className="p-5 space-y-6 my-16 bg-[#191B1D]">
-      <header className="px-1 space-y-3">
-        <div className="flex items-center">
-          <div className="font-extrabold">{username}</div>
-          <div className="flex ml-auto">
-            {myPostFlag ? (
-              <div className="flex w-full space-x-4 items-center">
-                <img
-                  onClick={navToEditPostPage}
-                  className="w-7 h-7 m-auto cursor-pointer"
-                  src={EditIcon}
-                />
-                <img
-                  onClick={deleteAndRefresh}
-                  className="w-7 h-7 m-auto cursor-pointer"
-                  src={DeleteIcon}
-                />
-              </div>
-            ) : null}
-          </div>
-        </div>
-        <div className="text-3xl font-bold">{post.title}</div>
-        <p>{post.content}</p>
-      </header>
-      <section className="flex">
-        <img className="w-full rounded-lg" src={url} />
-      </section>
-      <footer className="px-1">
-        <div className="flex w-full items-center">
-          <div className="flex space-x-4 items-center">
-            {likeTrigger ? (
-              <img
-                className="w-7 cursor-pointer"
-                src={RedHeartIcon}
-                onClick={unlikePost}
-              />
-            ) : (
-              <img
-                className="w-7 cursor-pointer"
-                src={HeartIcon}
-                onClick={likePost}
-              />
-            )}
-            <img
-              onClick={() => {
-                setCommentPopupTrigger(post.id);
-              }}
-              className="w-7 cursor-pointer"
-              src={CommentIcon}
-            />
+  const queryClient = useQueryClient();
 
-            {savedTrigger ? (
-              <img
-                onClick={unsavePost}
-                className="w-7 cursor-pointer"
-                src={WhiteBookmarkIcon}
-              />
-            ) : (
-              <img
-                onClick={savePostToFavorites}
-                className="w-7 cursor-pointer"
-                src={BookmarkIcon}
-              />
-            )}
+  const deletePostMutation = useMutation({
+    mutationKey: ["delete-post"],
+    mutationFn: deletePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-posts", "fav-posts", "feed"],
+      });
+    },
+  });
+
+  const likePostMutation = useMutation({
+    mutationKey: ["like-post", post.id],
+    mutationFn: likePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-posts", "fav-posts", "feed"],
+      });
+    },
+  });
+
+  const unlikePostMutation = useMutation({
+    mutationKey: ["unlike-post", post.id],
+    mutationFn: unlikePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-posts", "fav-posts", "feed"],
+      });
+    },
+  });
+
+  const savePostMutation = useMutation({
+    mutationKey: ["save-post", post.id],
+    mutationFn: savePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-posts", "fav-posts", "feed"],
+      });
+    },
+  });
+
+  const unsavePostMutation = useMutation({
+    mutationKey: ["unsave-post", post.id],
+    mutationFn: unsavePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-posts", "fav-posts", "feed"],
+      });
+    },
+  });
+
+  const query = useQuery({
+    queryKey: ["post-requirements", post.id],
+    queryFn: getPostRequirements,
+  });
+
+  if (query.isLoading) return <div>Loading ...</div>;
+  else
+    return (
+      <div className="p-5 space-y-6 my-16 bg-[#191B1D]">
+        <header className="px-1 space-y-3">
+          <div className="flex items-center">
+            <div className="font-extrabold">{username}</div>
+            <div className="flex ml-auto">
+              {myPostFlag ? (
+                <div className="flex w-full space-x-4 items-center">
+                  <img
+                    onClick={navToEditPostPage}
+                    className="w-7 h-7 m-auto cursor-pointer"
+                    src={EditIcon}
+                  />
+                  <img
+                    onClick={async () => await deletePostMutation.mutateAsync()}
+                    className="w-7 h-7 m-auto cursor-pointer"
+                    src={DeleteIcon}
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
-          <div className="ml-auto text-lg text-[#5C5D5E] text-start">
-            {likes} likes
+          <div className="text-3xl font-bold">{post.title}</div>
+          <p>{post.content}</p>
+        </header>
+        <section className="flex">
+          <img className="w-full rounded-lg" src={url} />
+        </section>
+        <footer className="px-1">
+          <div className="flex w-full items-center">
+            <div className="flex space-x-4 items-center">
+              {likeTrigger ? (
+                <img
+                  className="w-7 cursor-pointer"
+                  src={RedHeartIcon}
+                  onClick={async () => await unlikePostMutation.mutateAsync()}
+                />
+              ) : (
+                <img
+                  className="w-7 cursor-pointer"
+                  src={HeartIcon}
+                  onClick={async () => await likePostMutation.mutateAsync()}
+                />
+              )}
+              <img
+                onClick={() => {
+                  setCommentPopupTrigger(post.id);
+                }}
+                className="w-7 cursor-pointer"
+                src={CommentIcon}
+              />
+
+              {savedTrigger ? (
+                <img
+                  onClick={async () => await unsavePostMutation.mutateAsync()}
+                  className="w-7 cursor-pointer"
+                  src={WhiteBookmarkIcon}
+                />
+              ) : (
+                <img
+                  onClick={async () => await savePostMutation.mutateAsync()}
+                  className="w-7 cursor-pointer"
+                  src={BookmarkIcon}
+                />
+              )}
+            </div>
+            <div className="ml-auto text-lg text-[#5C5D5E] text-start">
+              {likes} likes
+            </div>
           </div>
-        </div>
-      </footer>
-      <CommentsPopup post={post} />
-    </div>
-  );
+        </footer>
+        <CommentsPopup post={post} />
+      </div>
+    );
 };
 
 export default Post;

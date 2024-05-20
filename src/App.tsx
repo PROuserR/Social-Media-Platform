@@ -5,8 +5,8 @@ import FavortiesPage from "./pages/FavortiesPage";
 import MyPostsPage from "./pages/MyPostsPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import EditPostPage from "./pages/EditPostPage";
-import SignupPage from "./pages/SignupPage";
-import LoginPage from "./pages/LoginPage";
+import SignupPage from "./auth/SignupPage";
+import LoginPage from "./auth/LoginPage";
 import useUserStore from "./stores/UserStore";
 
 function App() {

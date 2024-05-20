@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import usePostStore from "../stores/PostStore";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const EditPostPage = () => {
   const [editPostImageUrl, setEditPostImageUrl] = useState("");
@@ -48,44 +49,53 @@ const EditPostPage = () => {
     nav("/");
   };
 
-  useEffect(() => {
-    getImage();
-  }, []);
+  const editPostMutation = useMutation({
+    mutationKey: ["edit-post"],
+    mutationFn: editPost,
+    
+  });
 
-  return (
-    <div className="my-12">
-      <div className="flex flex-col w-full m-auto rounded-xl text-center p-14 space-y-10 text-xl bg-[#191B1D]">
-        <div className="text-4xl font-bold">Edit Post</div>
-        <div className="flex flex-col space-y-6">
-          <input
-            ref={titleRef}
-            className="w-4/5 m-auto rounded-xl py-4 bg-transparent text-3xl text-center border-2 border-black outline-none"
-            placeholder="Title"
-            defaultValue={editPostData.title}
-          />
-          <textarea
-            ref={contentRef}
-            className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black h-96"
-            defaultValue={editPostData.content}
-          ></textarea>
+  const getImageQuery = useQuery({
+    queryKey: ["get-image"],
+    queryFn: getImage,
+  });
 
-          <input
-            ref={imageRef}
-            className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black"
-            defaultValue={editPostImageUrl}
-            placeholder="Image Url"
-          />
+  if (getImageQuery.isLoading) return <div>Loading ...</div>;
+  else
+    return (
+      <div className="my-12">
+        <div className="flex flex-col w-full m-auto rounded-xl text-center p-14 space-y-10 text-xl bg-[#191B1D]">
+          <div className="text-4xl font-bold">Edit Post</div>
+          <div className="flex flex-col space-y-6">
+            <input
+              ref={titleRef}
+              className="w-4/5 m-auto rounded-xl py-4 bg-transparent text-3xl text-center border-2 border-black outline-none"
+              placeholder="Title"
+              defaultValue={editPostData.title}
+            />
+            <textarea
+              ref={contentRef}
+              className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black h-96"
+              defaultValue={editPostData.content}
+            ></textarea>
+
+            <input
+              ref={imageRef}
+              className="w-4/5 m-auto rounded-xl p-4 bg-transparent outline-none border-2 border-black"
+              defaultValue={editPostImageUrl}
+              placeholder="Image Url"
+            />
+          </div>
+
+          <button
+            onClick={async () => await editPostMutation.mutateAsync()}
+            className="w-4/5 m-auto py-3 px-8 bg-blue-700 rounded-2xl hover:bg-blue-600"
+          >
+            Update
+          </button>
         </div>
-
-        <button
-          onClick={editPost}
-          className="w-4/5 m-auto py-3 px-8 bg-blue-700 rounded-2xl hover:bg-blue-600"
-        >
-          Update
-        </button>
       </div>
-    </div>
-  );
+    );
 };
 
 export default EditPostPage;
