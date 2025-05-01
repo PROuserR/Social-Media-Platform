@@ -28,5 +28,7 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-- #Social Media Platform
+#Social Media Platform
 Share your posts and stay on contact with others. 
+<img src="Screenshots/Screenshot%202025-05-01%20163352.png" />
+<img src="Screenshots/Screenshot%202025-05-01%20164531.png)" />
