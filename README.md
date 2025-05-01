@@ -1,4 +1,4 @@
-#Social Media Platform
+# Social Media Platform
 Share your posts and stay on contact with others. 
 <img src="Screenshots/Screenshot%202025-05-01%20163352.png" />
 <img src="Screenshots/Screenshot%202025-05-01%20164531.png" />
